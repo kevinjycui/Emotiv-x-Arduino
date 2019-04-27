@@ -4,55 +4,10 @@ from websocket import create_connection
 import ssl
 import time
 import requests
+import setup
 
 receivedData = create_connection("wss://emotivcortex.com:54321", sslopt={"cert_reqs": ssl.CERT_NONE})
 ser = serial.Serial('COM5', 9600)
-
-def setup():
-    receivedData.send(json.dumps({
-    "jsonrpc": "2.0",
-    "method": "authorize",
-    "params": {},
-    "id": 1
-    }))
-
-    token = receivedData.recv()[43:-3]
-    
-    receivedData.send(json.dumps({
-        "jsonrpc": "2.0",
-        "method": "queryHeadsets",
-        "params": {},
-        "id": 1
-    }))
-
-    print(receivedData.recv())
-
-    receivedData.send(json.dumps({
-        "jsonrpc": "2.0",
-        "method": "createSession",
-        "params": {
-            "_auth": token,
-            "status": "open",
-            "project": "lingua"
-        },
-        "id": 1
-    }))
-
-    print(receivedData.recv())
-
-    receivedData.send(json.dumps({
-        "jsonrpc": "2.0",
-        "method": "subscribe",
-        "params": {
-            "_auth": token,
-            "streams": [
-                "met"
-            ]
-        },
-        "id": 1
-    }))
-
-    print(receivedData.recv())
 
 def get_value():
     data = json.loads(receivedData.recv())
@@ -62,7 +17,7 @@ def get_value():
     else:
         return -1
 
-setup()
+setup.setup()
 
 while True:
     select = int(input("Focus levels (0) or all levels (1)?\n>>> "))
