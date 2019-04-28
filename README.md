@@ -1,4 +1,4 @@
-# Emotiv-x-Arduino
+# Emotiv to Arduino Communicator
 Communicates synaptic data from the Emotiv INSIGHT EEG to an Arduino Mega ADK, visualizes Performance Metrics as LEDs.
 
 ## Summary
